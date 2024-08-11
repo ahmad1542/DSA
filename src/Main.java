@@ -20,7 +20,7 @@ class Main {
 	}
 
 	static void insertAtBeginning(Node head, int value) {
-		Node newNode = new Node(value);  // Use the constructor to set the value
+		Node newNode = new Node(value);
 	    newNode.next = head;
 	    head = newNode;
 	}
@@ -53,15 +53,15 @@ class Main {
 		preNode.next = newNode;
 	}
 	
-	static Node deleteNode(Node head, int value) {
+	static void deleteNode(Node head, int value) {
 		Node current = head, prev = null;
 		
         if (head == null) 
-            return head; 
+            return; 
 		  
         if (current.value == value) { 
             head = current.next;
-            return head; 
+            return; 
         } 
   
         while (current != null && current.value != value) { 
@@ -70,28 +70,28 @@ class Main {
         } 
   
         if (current == null) 
-            return head; 
+            return; 
   
         prev.next = current.next;
-        return head;
 	}
 	
-	static Node deleteFirstNode(Node head) {
-		if (head == null) {
-			return null;
+	static void deleteFirstNode(Node head) {
+		if (head == null || head.next == null) {
+			return;
 		}
-        return head.next;
+        head.value = head.next.value;
+        head.next = head.next.next;
 	}
 
-	static Node deleteLastNode(Node head) {
+	static void deleteLastNode(Node head) {
 		Node current = head, prev = null;
 		
         if (head == null) {
-            return null;
+            return;
         }
 
         if (head.next == null) {
-            return null;
+            return;
         }
         
         while (current.next != null) {
@@ -100,7 +100,6 @@ class Main {
         }
   
         prev.next = current.next;
-        return head;
 	}
 	
 	static Node find(Node head, int value) {
@@ -123,15 +122,13 @@ class Main {
 		Node head = new Node(0);
 		
 		insertAtEnd(head, 1);
-		head = deleteFirstNode(head);
 		insertAtEnd(head, 2);
 		insertAtEnd(head, 3);
 		insertAtEnd(head, 4);
 		insertAtEnd(head, 5);
-		
-		head = deleteLastNode(head);
 
-		printList(head);
+		deleteFirstNode(head);
 		
+		printList(head);
 	}
 }
