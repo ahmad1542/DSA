@@ -1,5 +1,3 @@
-import java.util.Vector;
-
 class Node {
 	int value;
 	Node next;
@@ -13,9 +11,7 @@ class Node {
 }
 
 class Main {
-	static Node head;
-	
-	static int size() {
+	static int size(Node head) {
 		int size = 1;
 		Node CurrNode = head;
 		while (CurrNode.next != null) {
@@ -25,52 +21,55 @@ class Main {
 		return size;
 	}
 
-	static void insertAtBeginning(Node head, int value) {
+	static Node insertAtBeginning(Node head, int value) {
 		Node newNode = new Node(value);
 		
 		newNode.next = head;
 		if (head != null)
 			head.prev = newNode;
-		head = newNode;
+		return newNode;
 	}
 
-	static void insertAtEnd(int value) {
+	static void insertAtEnd(Node head, int value) {
 		Node newNode = new Node(value);
 		newNode.next = null;
 
 		if (head == null) {
+			newNode.prev = null;
 			head = newNode;
-			return;
+		} else {
+			
+			Node lastNode = head;
+			while (lastNode.next != null) {
+				lastNode = lastNode.next;
+			}
+			lastNode.next = newNode;
+			newNode.prev = lastNode;
 		}
-
-		Node lastNode = head;
-		while (lastNode.next != null) {
-			lastNode = lastNode.next;
-		}
-
-		lastNode.next = newNode;
-		return;
 	}
 
-	static void insertAfter(int value) {
-		Node preNode = head;
-		if (preNode == null) {
+	static void insertAfter(Node current, int value) {
+		if (current == null) {
 			System.out.println("The previous node cannot be null.");
 			return;
 		}
 		Node newNode = new Node(value);
-		newNode.next = preNode.next;
-		preNode.next = newNode;
+		newNode.next = current.next;
+		newNode.prev = current;
+		if (current.next != null)
+			current.next.prev = newNode;
+		current.next = newNode;
 	}
 
-	static void deleteNode(int value) {
+	static void deleteNode(Node head, int value) {
 		Node current = head, prev = null;
 
 		if (head == null)
 			return;
 
 		if (current.value == value) {
-			head = current.next;
+			head.value = current.next.value;
+			head.next = current.next.next;
 			return;
 		}
 
@@ -81,11 +80,13 @@ class Main {
 
 		if (current == null)
 			return;
-
+		
 		prev.next = current.next;
+		if (current.next != null)
+			current.next.prev = prev;
 	}
 
-	static void deleteFirstNode() {
+	static void deleteFirstNode(Node head) {
 		if (head == null || head.next == null) {
 			return;
 		}
@@ -93,7 +94,7 @@ class Main {
 		head.next = head.next.next;
 	}
 
-	static void deleteLastNode() {
+	static void deleteLastNode(Node head) {
 		Node current = head, prev = null;
 
 		if (head == null) {
@@ -112,7 +113,7 @@ class Main {
 		prev.next = current.next;
 	}
 
-	static Node find(int value) {
+	static Node find(Node head, int value) {
 		while (head != null) {
 			if (head.value == value)
 				return head;
@@ -147,7 +148,7 @@ class Main {
 	}
 	
 	static void printList(Node head) {
-	    System.out.print("NULL <--> ");
+	    System.out.print("\n\nNULL <--> ");
 	    while (head != null) {
 	        System.out.print(head.value + " <--> ");
 	        head = head.next;
@@ -157,15 +158,17 @@ class Main {
 
 	public static void main(String[] args) {
 		Node head = new Node(6);
-
-		insertAtBeginning(head, 5);
-		insertAtBeginning(head, 4);
-		insertAtBeginning(head, 3);
-		insertAtBeginning(head, 2);
-		insertAtBeginning(head, 1);
+		
+		head = insertAtBeginning(head, 5);
+		head = insertAtBeginning(head, 4);
+		head = insertAtBeginning(head, 3);
+		head = insertAtBeginning(head, 2);
+		head = insertAtBeginning(head, 1);
+		insertAtEnd(head, 7);
+		deleteLastNode(head);
 
 		printList(head);
-		//printListDetails(head);
+		printListDetails(head);
 		//printNodeDetails(find(5));
 	}
 }
