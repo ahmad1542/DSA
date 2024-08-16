@@ -1,6 +1,6 @@
 
 public class clsDblLinkedList <T> {
-	class Node {
+	public class Node {
 		T value;
 		Node next;
 		Node prev;
@@ -14,9 +14,74 @@ public class clsDblLinkedList <T> {
 		
 	}
 	
-	Node head = null;
+	public Node head = null;
+	
+	private int size = 0;
+	
+	public int size() {
+		return size;
+	}
 
-	void insertAtBeginning(T value) {
+	public boolean isEmpty() {
+		return (size == 0);
+	}
+
+	public void clear() {
+		while (size > 0) {
+			deleteFirstNode();
+		}
+	}
+
+	public void reverse() {
+		Node current = head;
+		Node temp = null;
+		while (current != null) {
+			temp = current.prev;
+			current.prev = current.next;
+			current.next = temp;
+			current = current.prev;
+		}
+		
+		if (temp != null)
+			head = temp.prev;
+	}
+	
+	public Node getNode(int index) {
+		int counter = 0;
+		
+		if (index > size - 1 || index < 0) {
+			return null;
+		}
+		
+		Node current = head;
+		while (current != null || (current.next != null)) {
+			if (counter == index)
+				break;
+			current = current.next;
+			counter++;
+		}
+		
+		return current;
+	}
+
+	public T getItem(int index) {
+		Node itemNode = getNode(index);
+		if (itemNode == null)
+			return null;
+		else
+			return itemNode.value;
+	}
+
+	public boolean updateItem(int from, T to) {
+		Node current = getNode(from);
+		if (current != null) {
+			current.value = to;
+			return true;
+		} else 
+			return false; 
+	}
+	
+	public void insertAtBeginning(T value) {
 		Node newNode = new Node(value);
 		
 		newNode.next = head;
@@ -24,9 +89,10 @@ public class clsDblLinkedList <T> {
 		if (head != null)
 			head.prev = newNode;
 		head = newNode;
+		size++;
 	}
 
-	void insertAtEnd(T value) {
+	public void insertAtEnd(T value) {
 		Node newNode = new Node(value);
 		newNode.next = null;
 
@@ -42,9 +108,10 @@ public class clsDblLinkedList <T> {
 			lastNode.next = newNode;
 			newNode.prev = lastNode;
 		}
+		size++;
 	}
 
-	void insertAfter(Node current, T value) {
+	public void insertAfter(Node current, T value) {
 		if (current == null) {
 			System.out.println("The previous node cannot be null.");
 			return;
@@ -55,9 +122,19 @@ public class clsDblLinkedList <T> {
 		if (current.next != null)
 			current.next.prev = newNode;
 		current.next = newNode;
+		size++;
 	}
 
-	void deleteNode(T value) {
+	public boolean insertAfter(int index, T value) {
+		Node itemNode = getNode(index);
+		if (itemNode != null) {
+			insertAfter(itemNode, value);
+			return true;
+		} else
+			return false;
+	}
+	
+	public void deleteNode(T value) {
 		Node current = head, prev = null;
 
 		if (head == null)
@@ -66,6 +143,7 @@ public class clsDblLinkedList <T> {
 		if (current.value == value) {
 			head.value = current.next.value;
 			head.next = current.next.next;
+			size--;
 			return;
 		}
 
@@ -80,17 +158,22 @@ public class clsDblLinkedList <T> {
 		prev.next = current.next;
 		if (current.next != null)
 			current.next.prev = prev;
+		size--;
 	}
 
-	void deleteFirstNode() {
-		if (head == null || head.next == null) {
+	public void deleteFirstNode() {
+		if (head == null) {
 			return;
 		}
-		head.value = head.next.value;
-		head.next = head.next.next;
+		
+		head = head.next;
+		
+		if (head != null)
+			head.prev = null;
+		size--;
 	}
 
-	void deleteLastNode() {
+	public void deleteLastNode() {
 		Node current = head, prev = null;
 
 		if (head == null) {
@@ -107,9 +190,10 @@ public class clsDblLinkedList <T> {
 		}
 
 		prev.next = current.next;
+		size--;
 	}
 
-	Node find(T value) {
+	public Node find(T value) {
 		Node current = head;
         while (current != null) {
             if (current.value == value)
@@ -119,13 +203,13 @@ public class clsDblLinkedList <T> {
         return null;
 	}
 	
-	void printList() {
-		Node temp = head; // Use a temporary variable to traverse the list
-        System.out.print("\n\nNULL <--> ");
+	public void printList() {
+
+		Node temp = head;
         while (temp != null) {
-            System.out.print(temp.value + " <--> ");
+            System.out.print(temp.value + " ");
             temp = temp.next;
         }
-        System.out.println("NULL");
 	}
+
 }
