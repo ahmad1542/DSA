@@ -1,29 +1,48 @@
 class Main {
 	public static void main(String[] args) {
-		clsDynamicArray <Integer>  myDynamicArray = new clsDynamicArray<Integer>(5);
-		
-	    myDynamicArray.setItem(0, 10);
-	    myDynamicArray.setItem(1, 20);
-	    myDynamicArray.setItem(2, 30);
-	    myDynamicArray.setItem(3, 40);
-	    myDynamicArray.setItem(4, 50);
-	    
-	    System.out.print("\nIs Empty?  " + myDynamicArray.isEmpty());
-	    System.out.print("\nArray Size: " + myDynamicArray.size() + "\n");
-	    System.out.print("\nArray Items: \n");
+		clsQueueLine payBillsQueue = new clsQueueLine("A0", 10);
+	    clsQueueLine subscriptionsQueue = new clsQueueLine("B0", 5);
+	   
 
-	    myDynamicArray.printList();
+	    payBillsQueue.issueTicket();
+	    payBillsQueue.issueTicket();
+	    payBillsQueue.issueTicket();
+	    payBillsQueue.issueTicket();
+	    payBillsQueue.issueTicket();
 
-	    int index = myDynamicArray.find(30);
-	    if (index ==-1)
-	        System.out.print("\nItem was not Found :-(\n ");
-	    else
-	        System.out.print("\n30 is found at index : " + index);
+	    System.out.print("\nPay Bills Queue Info:\n");
+	    payBillsQueue.printInfo();
+
+	    payBillsQueue.printTicketsLineRTL();
+	    payBillsQueue.printTicketsLineLTR();
+
+
+
+	    payBillsQueue.printAllTickets();
+	 
+	    payBillsQueue.serveNextClient();
+	    System.out.print("\nPay Bills Queue After Serving One client\n");
+	    payBillsQueue.printInfo();
+
+	    System.out.print("\nSubscriptions Queue Info:\n");
+
+	    subscriptionsQueue.issueTicket();
+	    subscriptionsQueue.issueTicket();
+	    subscriptionsQueue.issueTicket();
+	   
+	  
+	    subscriptionsQueue.printInfo();
+
+	    subscriptionsQueue.printTicketsLineRTL();
+	    subscriptionsQueue.printTicketsLineLTR();
+	 
+	    subscriptionsQueue.printAllTickets();
 	    
-	    myDynamicArray.deleteItem(30);
-	    System.out.print("\n\nArray Items after deleting 30:");
-	    System.out.print("\nArray Size: " + myDynamicArray.size() + "\n");
-	    myDynamicArray.printList();
+	    subscriptionsQueue.serveNextClient();
+	    System.out.print("\nSubscriptions Queue After Serving One client\n");
+	    subscriptionsQueue.printInfo();
+	    
+	    subscriptionsQueue.printAllTickets();
 	    
 	}
 }

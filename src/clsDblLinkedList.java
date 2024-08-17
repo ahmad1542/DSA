@@ -46,6 +46,7 @@ public class clsDblLinkedList <T> {
 			head = temp.prev;
 	}
 	
+	@SuppressWarnings("null")
 	public Node getNode(int index) {
 		int counter = 0;
 		

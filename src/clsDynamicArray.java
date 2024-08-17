@@ -114,20 +114,52 @@ public class clsDynamicArray<T> {
 	}
 	
 	public boolean deleteItem(T item) {
-		size--;
+		int index = find(item);
+		
+		if (index == -1)
+			return false;
+		
+		return deleteItemAt(index);
+	}
+
+	public boolean insertAt(int index, T newItem) {
+		if (index > size || index < 0)
+			return false;
+		size++;
 		
 		@SuppressWarnings("unchecked")
 		T[] tempArray = (T[])new Object[size];
-		for (int i = 0; i < find(item); i++) {
+		for (int i = 0; i < index; i++) {
 			tempArray[i] = originalArray[i];
 		}
-		
-		for (int i = find(item) + 1; i < size + 1; i++) {
-			tempArray[i - 1] = originalArray[i];
+		tempArray[index] = newItem;
+		for (int i = index + 1; i < size; i++) {
+			tempArray[i] = originalArray[i - 1];
 		}
-
 		originalArray = tempArray;
 		return true;
+	}
+
+	public void insertAtBeginning(T newItem) {
+		insertAt(0, newItem);
+	}
+
+	public boolean insertBefore(int index, T newItem) {
+        if (index < 1)
+            return insertAt(0, newItem);
+        else
+            return insertAt(index, newItem);
+	}
+	
+	public boolean insertAfter(int index, T newItem) {
+        if (index >= size)
+            return insertAt(size - 1, newItem);
+        else
+            return insertAt(index + 1, newItem);
+	}
+	
+	public void insertAtEnd(T newItem) {
+		insertAt(size, newItem);
 	}
 	
 }
